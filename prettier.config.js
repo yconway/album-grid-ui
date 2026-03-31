@@ -1,0 +1,22 @@
+const config = {
+	arrowParens: 'always',
+	bracketSpacing: true,
+	embeddedLanguageFormatting: 'auto',
+	endOfLine: 'lf',
+	bracketSameLine: false,
+	experimentalTernaries: true,
+	htmlWhitespaceSensitivity: 'css',
+	jsxSingleQuote: false,
+	overrides: [{ files: '*.svelte', options: { parser: 'svelte' } }],
+	plugins: ['prettier-plugin-svelte'],
+	printWidth: 80,
+	proseWrap: 'preserve',
+	quoteProps: 'as-needed',
+	semi: false,
+	singleAttributePerLine: true,
+	singleQuote: false,
+	tabWidth: 2,
+	trailingComma: 'all',
+	useTabs: true,
+}
+module.exports = config

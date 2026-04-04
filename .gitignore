@@ -4,6 +4,8 @@ dist/
 .env.local
 package-lock.json
 
+.claude/*
+
 tasks/*
 AGENT.md
 documentation/*

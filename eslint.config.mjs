@@ -21,12 +21,6 @@ export default defineConfig(
 			],
 		},
 	},
-	{
-		files: ["*.js"],
-		languageOptions: {
-			sourceType: "commonjs",
-		},
-	},
 	prettierConfig,
 	{
 		ignores: ["node_modules/**", "dist/**"],

@@ -18,9 +18,25 @@ All script blocks use `<script lang="ts">`. Type-checked with `svelte-check`.
 
 **Why:** The UI exchanges data with the API — shared types catch contract mismatches at compile time rather than at runtime.
 
-## Styling (TBD)
+## Styling: Tailwind v4
 
-No CSS framework has been chosen yet. Document the decision here when made, including: scoped component styles vs global, CSS variables strategy, any utility class approach.
+Tailwind v4 via `@tailwindcss/vite`. Processed by the Vite plugin — no PostCSS config required.
+
+**CSS file layout:**
+
+- `src/styles/theme.css` — all `@theme` design tokens (colors, typography, spacing, radii). Edit only this file to change design tokens.
+- `src/styles/global.css` — imports Tailwind (`@import "tailwindcss"`), imports the theme, and sets document-level base styles (box-sizing, body background/color/font).
+- `src/main.ts` imports `global.css` as a side-effect entry point.
+
+**Why separate theme from global:** keeps token definitions isolated from base resets, making token changes easy to review and diff without wading through structural CSS.
+
+**No `tailwind.config.js`:** Tailwind v4 is CSS-first. All customization lives in `theme.css` via `@theme`. Do not use v3-style JS config.
+
+**Component styles:** use Tailwind utility classes directly in markup. Use scoped `<style>` blocks only for styles that genuinely can't be expressed as utilities (e.g. complex animations).
+
+**Design tokens in components:** reference tokens as CSS custom properties (`var(--color-accent)`) when a utility class doesn't exist for the exact value.
+
+**Dark/light mode:** tokens defined once in `theme.css`; mode toggled via `html.dark` / `html.light` class and `prefers-color-scheme` as the default. Persisted in `localStorage`.
 
 ## State management
 

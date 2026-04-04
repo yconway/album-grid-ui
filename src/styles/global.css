@@ -1,0 +1,20 @@
+@import "tailwindcss";
+@import "./theme.css";
+
+/* Base resets and document-level defaults */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	color-scheme: dark;
+}
+
+body {
+	background-color: var(--color-surface);
+	color: var(--color-text-primary);
+	font-family: var(--font-sans);
+	-webkit-font-smoothing: antialiased;
+}

@@ -1,12 +1,12 @@
-import { defineConfig } from 'eslint/config'
-import eslint from '@eslint/js'
-import tseslint from 'typescript-eslint'
-import prettierConfig from 'eslint-config-prettier'
+import { defineConfig } from "eslint/config"
+import eslint from "@eslint/js"
+import tseslint from "typescript-eslint"
+import prettierConfig from "eslint-config-prettier"
 
 export default defineConfig(
 	eslint.configs.recommended,
 	{
-		files: ['src/**/*.ts'],
+		files: ["src/**/*.ts"],
 		extends: tseslint.configs.recommendedTypeChecked,
 		languageOptions: {
 			parserOptions: {
@@ -15,17 +15,14 @@ export default defineConfig(
 			},
 		},
 		rules: {
-			'@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-		},
-	},
-	{
-		files: ['*.js'],
-		languageOptions: {
-			sourceType: 'commonjs',
+			"@typescript-eslint/no-unused-vars": [
+				"error",
+				{ argsIgnorePattern: "^_" },
+			],
 		},
 	},
 	prettierConfig,
 	{
-		ignores: ['node_modules/**', 'dist/**'],
+		ignores: ["node_modules/**", "dist/**"],
 	},
 )

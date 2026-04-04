@@ -1,28 +1,30 @@
 {
-  "compilerOptions": {
-    // project options
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "target": "ESNext",
-    "noEmit": true, // Vite handles compilation
+	"compilerOptions": {
+		"plugins": [{ "name": "typescript-svelte-plugin" }],
 
-    // module resolution
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "esModuleInterop": true,
+		// project options
+		"lib": ["ESNext", "DOM", "DOM.Iterable"],
+		"target": "ESNext",
+		"noEmit": true, // Vite handles compilation
 
-    // strict checks
-    "strict": true,
-    "skipLibCheck": true,
-    "isolatedModules": true,
-    "allowUnreachableCode": false,
+		// module resolution
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"esModuleInterop": true,
 
-    // linter checks
-    "noImplicitReturns": true,
-    "noUncheckedIndexedAccess": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true
-  },
+		// strict checks
+		"strict": true,
+		"skipLibCheck": true,
+		"isolatedModules": true,
+		"allowUnreachableCode": false,
 
-  "include": ["src/**/*.ts", "src/**/*.svelte", "vite.config.ts"],
-  "exclude": ["node_modules"]
+		// linter checks
+		"noImplicitReturns": true,
+		"noUncheckedIndexedAccess": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true
+	},
+
+	"include": ["src/**/*.ts", "src/**/*.svelte", "vite.config.ts"],
+	"exclude": ["node_modules"]
 }

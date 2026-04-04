@@ -1,0 +1,27 @@
+@theme {
+	/* Color palette */
+	--color-surface: #0f0f0f;
+	--color-surface-elevated: #1a1a1a;
+	--color-surface-overlay: #242424;
+
+	--color-text-primary: #f5f5f5;
+	--color-text-secondary: #a3a3a3;
+	--color-text-muted: #525252;
+
+	--color-accent: #e11d48;
+	--color-accent-hover: #f43f5e;
+
+	--color-border: #2a2a2a;
+	--color-border-strong: #404040;
+
+	/* Typography */
+	--font-sans: ui-sans-serif, system-ui, sans-serif;
+	--font-mono: ui-monospace, monospace;
+
+	/* Spacing scale (extends Tailwind defaults) */
+	--spacing-grid-gap: 0.75rem;
+
+	/* Border radius */
+	--radius-card: 0.5rem;
+	--radius-thumb: 0.25rem;
+}

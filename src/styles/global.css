@@ -7,6 +7,9 @@
 *::after {
 	box-sizing: border-box;
 
+	/* Intentional: smooth theme fade on every surface when dark/light mode toggles.
+	   background-color is computed per-element so * is the correct scope here — there
+	   is no single root to hook into. GPU-composited, does not trigger layout. */
 	transition-property: background-color;
 	transition-duration: 300ms;
 	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -17,12 +20,8 @@ html {
 }
 
 button {
-	/* Browsers default to cursor:default on buttons — pointer makes them feel interactive */
+	/* Browsers default to cursor:default — pointer makes them feel interactive */
 	cursor: pointer;
-
-	/* Sets the color used when a button opts into a border — each button decides whether to show one */
-	border-color: var(--color-button-border);
-	/* Smooth color/background/border transitions on hover; easing matches Tailwind's default */
 	transition-property: color, background-color, border-color;
 	transition-duration: 150ms;
 	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);

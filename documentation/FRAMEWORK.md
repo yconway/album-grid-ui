@@ -53,6 +53,20 @@ Tailwind v4 via `@tailwindcss/vite`. Processed by the Vite plugin — no PostCSS
 
 **Layout tokens:** `--spacing-grid-gap` (0.75rem), `--radius-card` (0.5rem), `--radius-thumb` (0.25rem).
 
+## File naming convention
+
+Components that have extracted logic or tests follow a co-located naming pattern:
+
+```
+ThemeToggle.svelte   — component
+ThemeToggle.ts       — extracted logic (pure functions, types, constants)
+ThemeToggle.test.ts  — tests
+```
+
+All three files share the same base name as the component. This makes ownership clear and ensures renaming a component doesn't leave orphaned files with mismatched names.
+
+Extract logic into a `.ts` file when it doesn't require reactivity — pure functions, types, and constants are good candidates. Keep reactive state (runes) in the `.svelte` file.
+
 ## State management
 
 Currently local component state only. If global state is introduced, document the approach here (e.g. Svelte stores, rune-based context, or an external store library) along with the rationale.

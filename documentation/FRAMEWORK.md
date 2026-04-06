@@ -34,9 +34,24 @@ Tailwind v4 via `@tailwindcss/vite`. Processed by the Vite plugin — no PostCSS
 
 **Component styles:** use Tailwind utility classes directly in markup. Use scoped `<style>` blocks only for styles that genuinely can't be expressed as utilities (e.g. complex animations).
 
-**Design tokens in components:** reference tokens as CSS custom properties (`var(--color-accent)`) when a utility class doesn't exist for the exact value.
+**Design tokens in components:** every `@theme` token automatically generates a Tailwind utility — `--color-accent` → `text-accent`, `bg-accent`; `--color-button-border` → `border-button-border`, etc. Always prefer these utilities over inline `style=""`. Only use `style=""` for values that are dynamic or computed at runtime in JS.
 
-**Dark/light mode:** tokens defined once in `theme.css`; mode toggled via `html.dark` / `html.light` class and `prefers-color-scheme` as the default. Persisted in `localStorage`.
+**Dark/light mode:** tokens defined once in `theme.css` with dark values as defaults. Light mode overrides are applied in `global.css` via `html:not(.dark)` under `@media (prefers-color-scheme: light)` (system default) and `html.light` (manual). `App.svelte` manages a `themeMode` state (`'dark' | 'light' | 'system'`) that applies the class to `document.documentElement` and persists the choice to `localStorage` under the key `"theme"`.
+
+**Design tokens (colors):**
+
+| Token                    | Dark                    | Light             |
+| ------------------------ | ----------------------- | ----------------- |
+| `--color-background`     | `#121212`               | `#F5F5F5`         |
+| `--color-surface`        | `#1E1E1E`               | `#FFFFFF`         |
+| `--color-accent`         | `#BB86FC`               | `#7C3AED`         |
+| `--color-text-primary`   | `#FFFFFF`               | `#111111`         |
+| `--color-text-secondary` | `rgba(255,255,255,0.7)` | `rgba(0,0,0,0.6)` |
+| `--color-button-border`  | `rgba(255,255,255,0.2)` | `rgba(0,0,0,0.2)` |
+
+**Typography tokens:** `--font-sans`, `--font-size-sm` (0.875rem), `--font-size-base` (1rem), `--font-size-lg` (1.125rem).
+
+**Layout tokens:** `--spacing-grid-gap` (0.75rem), `--radius-card` (0.5rem), `--radius-thumb` (0.25rem).
 
 ## State management
 

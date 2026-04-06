@@ -1,20 +1,37 @@
 @import "tailwindcss";
 @import "./theme.css";
 
-/* Base resets and document-level defaults */
+/* Base resets */
 *,
 *::before,
 *::after {
 	box-sizing: border-box;
+
+	transition-property: background-color;
+	transition-duration: 300ms;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 html {
 	color-scheme: dark;
 }
 
+button {
+	/* Browsers default to cursor:default on buttons — pointer makes them feel interactive */
+	cursor: pointer;
+
+	/* Sets the color used when a button opts into a border — each button decides whether to show one */
+	border-color: var(--color-button-border);
+	/* Smooth color/background/border transitions on hover; easing matches Tailwind's default */
+	transition-property: color, background-color, border-color;
+	transition-duration: 150ms;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 body {
-	background-color: var(--color-surface);
+	background-color: var(--color-background);
 	color: var(--color-text-primary);
 	font-family: var(--font-sans);
+	font-size: var(--font-size-base);
 	-webkit-font-smoothing: antialiased;
 }

@@ -1,27 +1,63 @@
 @theme {
-	/* Color palette */
-	--color-surface: #0f0f0f;
-	--color-surface-elevated: #1a1a1a;
-	--color-surface-overlay: #242424;
-
-	--color-text-primary: #f5f5f5;
-	--color-text-secondary: #a3a3a3;
-	--color-text-muted: #525252;
-
-	--color-accent: #e11d48;
-	--color-accent-hover: #f43f5e;
-
-	--color-border: #2a2a2a;
-	--color-border-strong: #404040;
+	/*
+	 * Color tokens — dark mode defaults.
+	 * Light mode overrides are defined below.
+	 *
+	 * --color-background  Page background
+	 * --color-surface     Cards, panels, and raised containers
+	 * --color-accent      Primary interactive color (buttons, links, highlights)
+	 * --color-text-primary    Body copy and headings
+	 * --color-text-secondary  Subdued labels, captions, metadata
+	 * --color-button-border   Border for outlined button variants
+	 */
+	--color-background: #121212;
+	--color-surface: #1e1e1e;
+	--color-accent: #bb86fc;
+	--color-text-primary: #ffffff;
+	--color-text-secondary: rgba(255, 255, 255, 0.7);
+	--color-button-border: rgba(255, 255, 255, 0.2);
 
 	/* Typography */
 	--font-sans: ui-sans-serif, system-ui, sans-serif;
-	--font-mono: ui-monospace, monospace;
+	--font-size-sm: 0.875rem;
+	--font-size-base: 1rem;
+	--font-size-lg: 1.125rem;
 
-	/* Spacing scale (extends Tailwind defaults) */
+	/* Spacing */
 	--spacing-grid-gap: 0.75rem;
 
 	/* Border radius */
 	--radius-card: 0.5rem;
 	--radius-thumb: 0.25rem;
+}
+
+/*
+ * Light mode overrides — two paths to the same values:
+ *
+ * 1. System preference: OS is set to light and the user hasn't manually overridden.
+ *    No class is on <html>; the media query fires because :not(.dark) is satisfied.
+ *
+ * 2. Manual class: user explicitly toggled to light. ThemeToggle adds .light to <html>,
+ *    which fires regardless of OS setting.
+ */
+@media (prefers-color-scheme: light) {
+	html:not(.dark) {
+		--color-background: #f5f5f5;
+		--color-surface: #ffffff;
+		--color-accent: #7c3aed;
+		--color-text-primary: #111111;
+		--color-text-secondary: rgba(0, 0, 0, 0.6);
+		--color-button-border: rgba(0, 0, 0, 0.2);
+		color-scheme: light;
+	}
+}
+
+html.light {
+	--color-background: #f5f5f5;
+	--color-surface: #ffffff;
+	--color-accent: #7c3aed;
+	--color-text-primary: #111111;
+	--color-text-secondary: rgba(0, 0, 0, 0.6);
+	--color-button-border: rgba(0, 0, 0, 0.2);
+	color-scheme: light;
 }

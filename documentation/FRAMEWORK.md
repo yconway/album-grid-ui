@@ -67,6 +67,44 @@ All three files share the same base name as the component. This makes ownership 
 
 Extract logic into a `.ts` file when it doesn't require reactivity — pure functions, types, and constants are good candidates. Keep reactive state (runes) in the `.svelte` file.
 
+## Array and object manipulation: Lodash
+
+Use Lodash for array and object manipulation. Prefer Lodash utilities over manually written `filter`, `map`, `reduce`, etc. where a Lodash equivalent exists.
+
+**Why:** Lodash functions are well-typed (via `@types/lodash`), battle-tested, and reduce the amount of inline boilerplate for common operations. `_.compact`, `_.cloneDeep`, `_.groupBy`, etc. are clearer at a glance than their manual equivalents.
+
+Import only what you use:
+
+```ts
+import compact from "lodash/compact"
+import cloneDeep from "lodash/cloneDeep"
+```
+
+Do not import the full library (`import _ from "lodash"`) — per-function imports allow tree-shaking.
+
 ## State management
 
-Currently local component state only. If global state is introduced, document the approach here (e.g. Svelte stores, rune-based context, or an external store library) along with the rationale.
+Global state uses Svelte 5 rune-based stores: a factory function closes over `$state`, returns a plain object with methods, and is exported as a singleton from a `.svelte.ts` file.
+
+**Why:** Rune-based stores work in plain `.svelte.ts` files without the Svelte 4 store contract (`subscribe`/`set`/`update`). The factory pattern keeps reactive state private while exposing a clean, typed API surface. Logic that doesn't need reactivity lives in a companion `.ts` file and is imported by the store.
+
+**Pattern:**
+
+```ts
+// grid.svelte.ts
+function createGridStore(): GridStore {
+	let grid = $state<Grid>(createEmptyGrid())
+	return {
+		get slots(): Grid {
+			return grid
+		},
+		addItem(item: MediaItem): void {
+			grid = addItem(grid, item)
+		},
+		// ...
+	}
+}
+export const gridStore = createGridStore()
+```
+
+**Type definitions** live in a `.type.ts` file alongside the store (e.g. `grid.type.ts`), per the TypeScript convention. The store file re-exports types as the single public entry point for consumers.

@@ -41,7 +41,10 @@
 </script>
 
 {#if import.meta.env.DEV}
-	<div class="relative" bind:this={wrapperEl}>
+	<div
+		class="relative"
+		bind:this={wrapperEl}
+	>
 		<button
 			class="cursor-pointer px-2 py-1 text-sm font-medium text-text-secondary hover:text-text-primary"
 			onclick={toggleDropdown}

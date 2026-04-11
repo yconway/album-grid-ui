@@ -13,7 +13,10 @@
 	>
 		{#each gridStore.slots as slot, index (slot?.id ?? `empty-${index}`)}
 			<div animate:flip={{ duration: 200 }}>
-				<MediaSlot {slot} {index} />
+				<MediaSlot
+					{slot}
+					{index}
+				/>
 			</div>
 		{/each}
 	</div>

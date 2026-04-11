@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest"
 import { createGridStore } from "./grid.svelte"
-import type { Grid, GridStore, MediaItem } from "./grid.type"
+import type { Grid, GridSlot, GridStore, MediaItem } from "./grid.type"
 
 function makeItem(id: string): MediaItem {
 	return {
@@ -39,7 +39,7 @@ describe("gridStore", () => {
 		store.addItem(itemA)
 		store.addItem(itemB)
 
-		const newGrid: Grid = Array(25).fill(null)
+		const newGrid: Grid = Array<GridSlot>(25).fill(null)
 		newGrid[0] = makeItem("x")
 		store.loadGrid(newGrid)
 

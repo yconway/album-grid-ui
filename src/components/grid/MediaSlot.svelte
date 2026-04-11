@@ -39,7 +39,9 @@
 {:else if hasImageError}
 	<div class="aspect-square rounded-[--radius-thumb] bg-surface/60"></div>
 {:else}
-	<div class="group relative aspect-square overflow-hidden rounded-[--radius-thumb] shadow-sm">
+	<div
+		class="group relative aspect-square overflow-hidden rounded-[--radius-thumb] shadow-sm"
+	>
 		<img
 			src={slot.coverUrl}
 			alt={slot.title}

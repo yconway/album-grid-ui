@@ -72,4 +72,41 @@ describe("gridStore", () => {
 		}
 		expect(store.isFull).toBe(true)
 	})
+
+	describe("error propagation", () => {
+		it("addItem throws on a full grid and does not corrupt state", () => {
+			for (let slotIndex = 0; slotIndex < 25; slotIndex++) {
+				store.addItem(makeItem(String(slotIndex)))
+			}
+			const slotsBefore = [...store.slots]
+			expect(() => store.addItem(makeItem("overflow"))).toThrow(Error)
+			expect(store.slots).toEqual(slotsBefore)
+		})
+
+		it("removeItem throws on an out-of-bounds index and does not corrupt state", () => {
+			store.addItem(itemA)
+			const slotsBefore = [...store.slots]
+			expect(() => store.removeItem(-1)).toThrow(RangeError)
+			expect(() => store.removeItem(25)).toThrow(RangeError)
+			expect(store.slots).toEqual(slotsBefore)
+		})
+
+		it("swapSlots throws on out-of-bounds indices and does not corrupt state", () => {
+			store.addItem(itemA)
+			store.addItem(itemB)
+			const slotsBefore = [...store.slots]
+			expect(() => store.swapSlots(-1, 0)).toThrow(RangeError)
+			expect(() => store.swapSlots(0, 25)).toThrow(RangeError)
+			expect(store.slots).toEqual(slotsBefore)
+		})
+
+		it("reorderSlot throws on out-of-bounds indices and does not corrupt state", () => {
+			store.addItem(itemA)
+			store.addItem(itemB)
+			const slotsBefore = [...store.slots]
+			expect(() => store.reorderSlot(-1, 0)).toThrow(RangeError)
+			expect(() => store.reorderSlot(0, 25)).toThrow(RangeError)
+			expect(store.slots).toEqual(slotsBefore)
+		})
+	})
 })

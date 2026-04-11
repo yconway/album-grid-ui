@@ -2,7 +2,7 @@ import compact from "lodash/compact"
 import type { Grid, GridSlot, MediaItem } from "./grid.type"
 
 const GRID_HEIGHT = 5
-const GRID_WIDTH = 5
+export const GRID_WIDTH = 5
 const GRID_SIZE = GRID_HEIGHT * GRID_WIDTH
 
 export function createEmptyGrid(): Grid {

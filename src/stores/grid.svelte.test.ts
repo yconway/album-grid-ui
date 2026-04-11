@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest"
 import { createGridStore } from "./grid.svelte"
-import type { GridStore, MediaItem } from "./grid.type"
+import type { Grid, GridStore, MediaItem } from "./grid.type"
 
 function makeItem(id: string): MediaItem {
 	return {
@@ -33,6 +33,19 @@ describe("gridStore", () => {
 	it("addItem updates slots", () => {
 		store.addItem(itemA)
 		expect(store.slots[0]).toBe(itemA)
+	})
+
+	it("loadGrid replaces all slots with the provided grid", () => {
+		store.addItem(itemA)
+		store.addItem(itemB)
+
+		const newGrid: Grid = Array(25).fill(null)
+		newGrid[0] = makeItem("x")
+		store.loadGrid(newGrid)
+
+		expect(store.slots).toEqual(newGrid)
+		expect(store.slots[0]).toEqual(makeItem("x"))
+		expect(store.slots[1]).toBeNull()
 	})
 
 	it("removeItem updates slots", () => {

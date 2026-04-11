@@ -25,6 +25,10 @@ export function createGridStore(): GridStore {
 			grid = addItem(grid, item)
 		},
 
+		loadGrid(newGrid: Grid): void {
+			grid = newGrid
+		},
+
 		removeItem(index: number): void {
 			grid = removeItem(grid, index)
 		},

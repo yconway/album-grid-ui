@@ -9,8 +9,6 @@ import {
 } from "./grid"
 import type { Grid, GridStore, MediaItem } from "./grid.type"
 
-export type { Grid, GridSlot, MediaItem } from "./grid.type"
-
 export function createGridStore(): GridStore {
 	let grid = $state<Grid>(createEmptyGrid())
 

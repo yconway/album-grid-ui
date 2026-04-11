@@ -8,14 +8,14 @@
 	 * --color-accent      Primary interactive color (buttons, links, highlights)
 	 * --color-text-primary    Body copy and headings
 	 * --color-text-secondary  Subdued labels, captions, metadata
-	 * --color-button-border   Border for outlined button variants
+	 * --color-border          Borders for slots, buttons, dividers, and other UI edges
 	 */
 	--color-background: #121212;
 	--color-surface: #1e1e1e;
 	--color-accent: #bb86fc;
 	--color-text-primary: #ffffff;
 	--color-text-secondary: rgba(255, 255, 255, 0.7);
-	--color-button-border: rgba(255, 255, 255, 0.2);
+	--color-border: rgba(255, 255, 255, 0.2);
 
 	/* Typography */
 	--font-sans: ui-sans-serif, system-ui, sans-serif;
@@ -47,7 +47,7 @@
 		--color-accent: #7c3aed;
 		--color-text-primary: #111111;
 		--color-text-secondary: rgba(0, 0, 0, 0.6);
-		--color-button-border: rgba(0, 0, 0, 0.2);
+		--color-border: rgba(0, 0, 0, 0.2);
 		color-scheme: light;
 	}
 }
@@ -58,6 +58,6 @@ html.light {
 	--color-accent: #7c3aed;
 	--color-text-primary: #111111;
 	--color-text-secondary: rgba(0, 0, 0, 0.6);
-	--color-button-border: rgba(0, 0, 0, 0.2);
+	--color-border: rgba(0, 0, 0, 0.2);
 	color-scheme: light;
 }

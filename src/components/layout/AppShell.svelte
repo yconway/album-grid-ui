@@ -1,6 +1,5 @@
 <script lang="ts">
 	import AppHeader from "./AppHeader.svelte"
-	import AppFooter from "./AppFooter.svelte"
 	import type { Snippet } from "svelte"
 
 	interface AppShellProps {
@@ -17,5 +16,4 @@
 			{@render children()}
 		</div>
 	</main>
-	<AppFooter />
 </div>

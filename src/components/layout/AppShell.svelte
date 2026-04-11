@@ -1,5 +1,6 @@
 <script lang="ts">
 	import AppHeader from "./AppHeader.svelte"
+	import ThemeToggle from "../ui/ThemeToggle.svelte"
 	import type { Snippet } from "svelte"
 
 	interface AppShellProps {
@@ -16,4 +17,9 @@
 			{@render children()}
 		</div>
 	</main>
+	<footer
+		class="flex items-center justify-center border-t border-border bg-surface px-4 py-3"
+	>
+		<ThemeToggle />
+	</footer>
 </div>

@@ -12,6 +12,7 @@ export type Grid = GridSlot[] // length 25, indices 0–24
 export interface GridStore {
 	readonly slots: Grid
 	addItem(item: MediaItem): void
+	loadGrid(grid: Grid): void
 	removeItem(index: number): void
 	vacuumGrid(): void
 	swapSlots(indexA: number, indexB: number): void

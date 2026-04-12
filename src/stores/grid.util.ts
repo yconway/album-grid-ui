@@ -1,91 +1,29 @@
-import compact from "lodash/compact"
-import type { Grid, GridSlot, MediaItem } from "./grid.type"
+import type { Grid, MediaItem } from "./grid.type"
 
 const GRID_HEIGHT = 5
 export const GRID_WIDTH = 5
 export const GRID_SIZE = GRID_HEIGHT * GRID_WIDTH
 
-export function createEmptyGrid(): Grid {
-	return Array<GridSlot>(GRID_SIZE).fill(null)
-}
-
-/** Adds item to the first empty slot. Throws if the grid is full. */
+/** Appends the item to the grid. Throws if the grid is full. */
 export function addItem(grid: Grid, item: MediaItem): Grid {
-	const firstEmptyIndex = grid.findIndex((slot) => slot === null)
-	if (firstEmptyIndex === -1) {
+	if (grid.length >= GRID_SIZE) {
 		throw new Error("addItem: cannot add item to a full grid")
 	}
-	const updated = [...grid]
-	updated[firstEmptyIndex] = item
-	return updated
+	return [...grid, item]
 }
 
-/** Clears the slot at `index`, leaving all other slots in place. */
+/** Removes the item at `index`, shifting subsequent items left. */
 export function removeItem(grid: Grid, index: number): Grid {
-	if (indexOutOfBounds(index, grid)) {
+	if (index < 0 || index >= grid.length) {
 		throw new RangeError(
 			`removeItem: index ${index} is out of bounds for grid of length ${grid.length}`,
 		)
 	}
 	const updated = [...grid]
-	updated[index] = null
+	updated.splice(index, 1)
 	return updated
-}
-
-/** Shifts all items to the front of the array, filling trailing slots with null. */
-export function vacuumGrid(grid: Grid): Grid {
-	const filledSlots = compact(grid)
-	return [
-		...filledSlots,
-		...Array<GridSlot>(GRID_SIZE - filledSlots.length).fill(null),
-	]
-}
-
-/** True swap: A goes to B's position, B goes to A's position. */
-export function swapSlots(grid: Grid, indexA: number, indexB: number): Grid {
-	if (indexOutOfBounds(indexA, grid) || indexOutOfBounds(indexB, grid)) {
-		throw new RangeError(
-			`swapSlots: indices ${indexA} and ${indexB} must be within [0, ${grid.length - 1}]`,
-		)
-	}
-	const updated = [...grid]
-	// Bounds check above guarantees these indices are valid.
-	const slotA = updated[indexA]!
-	const slotB = updated[indexB]!
-	updated[indexA] = slotB
-	updated[indexB] = slotA
-	return updated
-}
-
-/**
- * Insert-style reorder: removes the item at `fromIndex` and inserts it at `toIndex`,
- * shifting items between the two positions to fill the gap.
- *
- * Example: reorderSlot([A, B, C, ...], 0, 2) → [B, C, A, ...]
- */
-export function reorderSlot(
-	grid: Grid,
-	fromIndex: number,
-	toIndex: number,
-): Grid {
-	if (indexOutOfBounds(fromIndex, grid) || indexOutOfBounds(toIndex, grid)) {
-		throw new RangeError(
-			`reorderSlot: indices ${fromIndex} and ${toIndex} must be within [0, ${grid.length - 1}]`,
-		)
-	}
-	if (fromIndex === toIndex) {
-		return grid
-	}
-	const updated = [...grid]
-	const removed: GridSlot = updated.splice(fromIndex, 1)[0]!
-	updated.splice(toIndex, 0, removed)
-	return updated
-}
-
-function indexOutOfBounds(index: number, grid: Grid): boolean {
-	return index < 0 || index >= grid.length
 }
 
 export function isFull(grid: Grid): boolean {
-	return grid.every((slot) => slot !== null)
+	return grid.length === GRID_SIZE
 }

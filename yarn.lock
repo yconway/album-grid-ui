@@ -1581,6 +1581,11 @@ svelte-check@^4.0.0:
     picocolors "^1.0.0"
     sade "^1.7.4"
 
+svelte-dnd-action@^0.9.69:
+  version "0.9.69"
+  resolved "https://registry.yarnpkg.com/svelte-dnd-action/-/svelte-dnd-action-0.9.69.tgz#5799b98981c7e8f1c15567d9115770af8704e255"
+  integrity sha512-NAmSOH7htJoYraTQvr+q5whlIuVoq88vEuHr4NcFgscDRUxfWPPxgie2OoxepBCQCikrXZV4pqV86aun60wVyw==
+
 svelte2tsx@~0.7.53:
   version "0.7.53"
   resolved "https://registry.yarnpkg.com/svelte2tsx/-/svelte2tsx-0.7.53.tgz#aa122c709613cd12487c12251192b242afa299b4"

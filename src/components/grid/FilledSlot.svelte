@@ -1,14 +1,15 @@
 <script lang="ts">
-	import { Plus, Trash2 } from "lucide-svelte"
-	import type { GridSlot } from "../../stores/grid.type"
+	import { Trash2 } from "lucide-svelte"
+	import type { MediaItem } from "../../stores/grid.type"
 	import { gridStore } from "../../stores/gridStore.svelte"
 
-	interface MediaSlotProps {
-		slot: GridSlot
+	interface FilledSlotProps {
+		item: MediaItem
 		index: number
+		isShadow?: boolean
 	}
 
-	let { slot, index }: MediaSlotProps = $props()
+	let { item, index, isShadow = false }: FilledSlotProps = $props()
 
 	let hasImageError = $state(false)
 
@@ -21,24 +22,23 @@
 	}
 </script>
 
-{#if slot === null}
+{#if hasImageError}
 	<div
-		class="group flex aspect-square cursor-pointer items-center justify-center rounded-[--radius-thumb] border border-dashed border-border bg-surface transition-colors hover:border-accent"
-	>
-		<Plus
-			size={24}
-			class="opacity-40 text-text-secondary transition-transform group-hover:scale-110"
-		/>
-	</div>
-{:else if hasImageError}
-	<div class="aspect-square rounded-[--radius-thumb] bg-surface/60"></div>
+		class="aspect-square rounded-[--radius-thumb] bg-surface/60 {isShadow ?
+			'ring-2 ring-accent'
+		:	''}"
+	></div>
 {:else}
 	<div
-		class="group relative aspect-square overflow-hidden rounded-[--radius-thumb] shadow-sm"
+		class="group relative aspect-square cursor-grab overflow-hidden rounded-[--radius-thumb] shadow-sm {(
+			isShadow
+		) ?
+			'ring-2 ring-accent'
+		:	''}"
 	>
 		<img
-			src={slot.coverUrl}
-			alt={slot.title}
+			src={item.coverUrl}
+			alt={item.title}
 			loading="lazy"
 			class="h-full w-full object-cover"
 			onerror={markImageErrored}

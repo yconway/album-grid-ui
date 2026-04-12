@@ -36,7 +36,12 @@
 }
 
 /*
- * Light mode overrides — two paths to the same values:
+ * Light mode overrides — two paths to the same values.
+ *
+ * NOTE: The variable block is intentionally duplicated below (media query + .light class).
+ * CSS has no native way to share declarations between a media query and a class selector,
+ * so both must be written out. Keep them in sync when changing token values.
+ *
  *
  * 1. System preference: OS is set to light and the user hasn't manually overridden.
  *    No class is on <html>; the media query fires because :not(.dark) is satisfied.

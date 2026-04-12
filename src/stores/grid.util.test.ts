@@ -7,7 +7,7 @@ import {
 	removeItem,
 	swapSlots,
 	vacuumGrid,
-} from "./grid"
+} from "./grid.util"
 import type { Grid, MediaItem } from "./grid.type"
 
 function makeItem(id: string): MediaItem {

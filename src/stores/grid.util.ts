@@ -3,7 +3,7 @@ import type { Grid, GridSlot, MediaItem } from "./grid.type"
 
 const GRID_HEIGHT = 5
 export const GRID_WIDTH = 5
-const GRID_SIZE = GRID_HEIGHT * GRID_WIDTH
+export const GRID_SIZE = GRID_HEIGHT * GRID_WIDTH
 
 export function createEmptyGrid(): Grid {
 	return Array<GridSlot>(GRID_SIZE).fill(null)
@@ -51,8 +51,9 @@ export function swapSlots(grid: Grid, indexA: number, indexB: number): Grid {
 		)
 	}
 	const updated = [...grid]
-	const slotA: GridSlot = updated[indexA] ?? null
-	const slotB: GridSlot = updated[indexB] ?? null
+	// Bounds check above guarantees these indices are valid.
+	const slotA = updated[indexA]!
+	const slotB = updated[indexB]!
 	updated[indexA] = slotB
 	updated[indexB] = slotA
 	return updated

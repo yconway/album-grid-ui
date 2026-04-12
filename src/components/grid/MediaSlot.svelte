@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Plus, Trash2 } from "lucide-svelte"
 	import type { GridSlot } from "../../stores/grid.type"
-	import { gridStore } from "../../stores/grid.svelte"
+	import { gridStore } from "../../stores/gridStore.svelte"
 
 	interface MediaSlotProps {
 		slot: GridSlot
@@ -18,13 +18,7 @@
 
 	function removeSlot() {
 		gridStore.removeItem(index)
-		gridStore.vacuumGrid()
 	}
-
-	$effect(() => {
-		slot?.coverUrl
-		hasImageError = false
-	})
 </script>
 
 {#if slot === null}
@@ -50,15 +44,17 @@
 			onerror={markImageErrored}
 		/>
 		<div
-			class="absolute inset-0 bg-(--color-overlay) opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+			class="absolute inset-0 bg-overlay opacity-0 transition-opacity duration-150 group-hover:opacity-100"
 		></div>
 		<button
+			type="button"
+			aria-label="Remove item"
 			class="absolute right-1 top-1 cursor-pointer opacity-0 transition-opacity duration-150 group-hover:opacity-100"
 			onclick={removeSlot}
 		>
 			<Trash2
 				size={18}
-				class="text-(--color-error)"
+				class="text-error"
 			/>
 		</button>
 	</div>

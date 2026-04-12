@@ -1,4 +1,5 @@
 import type { Grid, MediaItem } from "../stores/grid.type"
+import { GRID_SIZE } from "../stores/grid.util"
 
 function makePresetItem(index: number): MediaItem {
 	return {
@@ -10,7 +11,7 @@ function makePresetItem(index: number): MediaItem {
 }
 
 function buildGrid(filledCount: number): Grid {
-	return Array.from({ length: 25 }, (_, slotIndex) =>
+	return Array.from({ length: GRID_SIZE }, (_unusedSlot, slotIndex) =>
 		slotIndex < filledCount ? makePresetItem(slotIndex) : null,
 	)
 }
@@ -18,5 +19,5 @@ function buildGrid(filledCount: number): Grid {
 export const emptyGrid: Grid = buildGrid(0)
 export const oneItemGrid: Grid = buildGrid(1)
 export const partialGrid: Grid = buildGrid(13)
-export const nearFullGrid: Grid = buildGrid(24)
-export const fullGrid: Grid = buildGrid(25)
+export const nearFullGrid: Grid = buildGrid(GRID_SIZE - 1)
+export const fullGrid: Grid = buildGrid(GRID_SIZE)

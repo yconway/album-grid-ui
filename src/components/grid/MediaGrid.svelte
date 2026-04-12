@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { flip } from "svelte/animate"
-	import { gridStore } from "../../stores/grid.svelte"
-	import { GRID_WIDTH } from "../../stores/grid"
+	import { gridStore } from "../../stores/gridStore.svelte"
+	import { GRID_WIDTH } from "../../stores/grid.util"
 	import MediaSlot from "./MediaSlot.svelte"
 </script>
 

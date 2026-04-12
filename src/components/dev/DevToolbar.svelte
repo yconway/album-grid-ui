@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { gridStore } from "../../stores/grid.svelte"
+	import { gridStore } from "../../stores/gridStore.svelte"
 	import {
 		emptyGrid,
 		oneItemGrid,
@@ -7,9 +7,10 @@
 		nearFullGrid,
 		fullGrid,
 	} from "../../lib/gridPresets"
+	import type { Grid } from "../../stores/grid.type"
 
 	let isOpen = $state(false)
-	let wrapperEl: HTMLElement | undefined
+	let wrapperElement = $state<HTMLElement | undefined>(undefined)
 
 	const presets = [
 		{ label: "Empty", grid: emptyGrid },
@@ -23,15 +24,20 @@
 		isOpen = !isOpen
 	}
 
-	function loadPreset(preset: typeof emptyGrid) {
+	function loadPreset(preset: Grid) {
 		gridStore.loadGrid(preset)
 		isOpen = false
 	}
 
 	$effect(() => {
-		if (!isOpen) return
+		if (!isOpen) {
+			return
+		}
+		// The listener is added after the current event loop tick, so the click
+		// that opened the dropdown has already finished bubbling and won't
+		// immediately re-trigger this handler.
 		function handleOutsideClick(event: MouseEvent) {
-			if (!wrapperEl?.contains(event.target as Node)) {
+			if (!wrapperElement?.contains(event.target as Node)) {
 				isOpen = false
 			}
 		}
@@ -43,9 +49,10 @@
 {#if import.meta.env.DEV}
 	<div
 		class="relative"
-		bind:this={wrapperEl}
+		bind:this={wrapperElement}
 	>
 		<button
+			type="button"
 			class="cursor-pointer px-2 py-1 text-sm font-medium text-text-secondary hover:text-text-primary"
 			onclick={toggleDropdown}
 		>
@@ -57,6 +64,7 @@
 			>
 				{#each presets as preset}
 					<button
+						type="button"
 						class="w-full cursor-pointer px-3 py-2 text-left text-sm text-text-primary hover:bg-background"
 						onclick={() => loadPreset(preset.grid)}
 					>

@@ -30,6 +30,7 @@ export function createGridStore(): GridStore {
 			grid = newGrid
 		},
 
+		/** vacuums grid after removing the item. */
 		removeItem(index: number): void {
 			grid = vacuumGrid(removeItem(grid, index))
 		},

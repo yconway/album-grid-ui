@@ -18,6 +18,7 @@ function buildGrid(filledCount: number): Grid {
 
 export const emptyGrid: Grid = buildGrid(0)
 export const oneItemGrid: Grid = buildGrid(1)
+// 2 full rows, one partial row
 export const partialGrid: Grid = buildGrid(13)
 export const nearFullGrid: Grid = buildGrid(GRID_SIZE - 1)
 export const fullGrid: Grid = buildGrid(GRID_SIZE)

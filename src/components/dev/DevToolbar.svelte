@@ -38,6 +38,7 @@
 		// immediately re-trigger this handler.
 		function handleOutsideClick(event: MouseEvent) {
 			if (!wrapperElement?.contains(event.target as Node)) {
+				//click events are always Node types
 				isOpen = false
 			}
 		}

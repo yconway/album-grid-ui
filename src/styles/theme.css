@@ -9,6 +9,8 @@
 	 * --color-text-primary    Body copy and headings
 	 * --color-text-secondary  Subdued labels, captions, metadata
 	 * --color-border          Borders for slots, buttons, dividers, and other UI edges
+	 * --color-error           Destructive actions (e.g. trash icon); has light/dark variants
+	 * --color-overlay         Semi-transparent dark overlay for filled slot hover states; theme-agnostic
 	 */
 	--color-background: #121212;
 	--color-surface: #1e1e1e;
@@ -16,6 +18,8 @@
 	--color-text-primary: #ffffff;
 	--color-text-secondary: rgba(255, 255, 255, 0.7);
 	--color-border: rgba(255, 255, 255, 0.2);
+	--color-error: #cf6679;
+	--color-overlay: rgba(0, 0, 0, 0.6);
 
 	/* Typography */
 	--font-sans: ui-sans-serif, system-ui, sans-serif;
@@ -32,7 +36,12 @@
 }
 
 /*
- * Light mode overrides — two paths to the same values:
+ * Light mode overrides — two paths to the same values.
+ *
+ * NOTE: The variable block is intentionally duplicated below (media query + .light class).
+ * CSS has no native way to share declarations between a media query and a class selector,
+ * so both must be written out. Keep them in sync when changing token values.
+ *
  *
  * 1. System preference: OS is set to light and the user hasn't manually overridden.
  *    No class is on <html>; the media query fires because :not(.dark) is satisfied.
@@ -48,6 +57,7 @@
 		--color-text-primary: #111111;
 		--color-text-secondary: rgba(0, 0, 0, 0.6);
 		--color-border: rgba(0, 0, 0, 0.2);
+		--color-error: #b00020;
 		color-scheme: light;
 	}
 }
@@ -59,5 +69,6 @@ html.light {
 	--color-text-primary: #111111;
 	--color-text-secondary: rgba(0, 0, 0, 0.6);
 	--color-border: rgba(0, 0, 0, 0.2);
+	--color-error: #b00020;
 	color-scheme: light;
 }

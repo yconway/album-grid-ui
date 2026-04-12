@@ -3,7 +3,7 @@ import type { Grid, GridSlot, MediaItem } from "./grid.type"
 
 const GRID_HEIGHT = 5
 export const GRID_WIDTH = 5
-const GRID_SIZE = GRID_HEIGHT * GRID_WIDTH
+export const GRID_SIZE = GRID_HEIGHT * GRID_WIDTH
 
 export function createEmptyGrid(): Grid {
 	return Array<GridSlot>(GRID_SIZE).fill(null)
@@ -22,7 +22,7 @@ export function addItem(grid: Grid, item: MediaItem): Grid {
 
 /** Clears the slot at `index`, leaving all other slots in place. */
 export function removeItem(grid: Grid, index: number): Grid {
-	if (index < 0 || index >= grid.length) {
+	if (indexOutOfBounds(index, grid)) {
 		throw new RangeError(
 			`removeItem: index ${index} is out of bounds for grid of length ${grid.length}`,
 		)
@@ -34,25 +34,24 @@ export function removeItem(grid: Grid, index: number): Grid {
 
 /** Shifts all items to the front of the array, filling trailing slots with null. */
 export function vacuumGrid(grid: Grid): Grid {
-	const items = compact(grid)
-	return [...items, ...Array<GridSlot>(GRID_SIZE - items.length).fill(null)]
+	const filledSlots = compact(grid)
+	return [
+		...filledSlots,
+		...Array<GridSlot>(GRID_SIZE - filledSlots.length).fill(null),
+	]
 }
 
 /** True swap: A goes to B's position, B goes to A's position. */
 export function swapSlots(grid: Grid, indexA: number, indexB: number): Grid {
-	if (
-		indexA < 0 ||
-		indexA >= grid.length ||
-		indexB < 0 ||
-		indexB >= grid.length
-	) {
+	if (indexOutOfBounds(indexA, grid) || indexOutOfBounds(indexB, grid)) {
 		throw new RangeError(
 			`swapSlots: indices ${indexA} and ${indexB} must be within [0, ${grid.length - 1}]`,
 		)
 	}
 	const updated = [...grid]
-	const slotA: GridSlot = updated[indexA] ?? null
-	const slotB: GridSlot = updated[indexB] ?? null
+	// Bounds check above guarantees these indices are valid.
+	const slotA = updated[indexA]!
+	const slotB = updated[indexB]!
 	updated[indexA] = slotB
 	updated[indexB] = slotA
 	return updated
@@ -69,12 +68,7 @@ export function reorderSlot(
 	fromIndex: number,
 	toIndex: number,
 ): Grid {
-	if (
-		fromIndex < 0 ||
-		fromIndex >= grid.length ||
-		toIndex < 0 ||
-		toIndex >= grid.length
-	) {
+	if (indexOutOfBounds(fromIndex, grid) || indexOutOfBounds(toIndex, grid)) {
 		throw new RangeError(
 			`reorderSlot: indices ${fromIndex} and ${toIndex} must be within [0, ${grid.length - 1}]`,
 		)
@@ -83,9 +77,13 @@ export function reorderSlot(
 		return grid
 	}
 	const updated = [...grid]
-	const removed: GridSlot = updated.splice(fromIndex, 1)[0] ?? null
+	const removed: GridSlot = updated.splice(fromIndex, 1)[0]!
 	updated.splice(toIndex, 0, removed)
 	return updated
+}
+
+function indexOutOfBounds(index: number, grid: Grid): boolean {
+	return index < 0 || index >= grid.length
 }
 
 export function isFull(grid: Grid): boolean {

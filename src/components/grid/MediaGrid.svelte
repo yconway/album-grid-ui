@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { gridStore } from "../../stores/grid.svelte"
-	import { GRID_WIDTH } from "../../stores/grid"
+	import { flip } from "svelte/animate"
+	import { gridStore } from "../../stores/gridStore.svelte"
+	import { GRID_WIDTH } from "../../stores/grid.util"
 	import MediaSlot from "./MediaSlot.svelte"
 </script>
 
@@ -11,7 +12,12 @@
 		style="grid-template-columns: repeat({GRID_WIDTH}, minmax(0, 1fr))"
 	>
 		{#each gridStore.slots as slot, index (slot?.id ?? `empty-${index}`)}
-			<MediaSlot {slot} />
+			<div animate:flip={{ duration: 200 }}>
+				<MediaSlot
+					{slot}
+					{index}
+				/>
+			</div>
 		{/each}
 	</div>
 </div>

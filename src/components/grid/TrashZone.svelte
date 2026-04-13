@@ -35,7 +35,9 @@
 	role="region"
 	aria-label="Drop here to delete"
 >
-	<div class="pointer-events-none absolute inset-0 flex items-center justify-center">
+	<div
+		class="pointer-events-none absolute inset-0 flex items-center justify-center"
+	>
 		<Trash2 size={24} />
 	</div>
 	<div

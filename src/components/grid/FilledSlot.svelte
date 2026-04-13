@@ -20,6 +20,10 @@
 	function removeSlot() {
 		gridStore.removeItem(index)
 	}
+
+	function suppressContextMenu(event: Event) {
+		event.preventDefault()
+	}
 </script>
 
 {#if hasImageError}
@@ -42,6 +46,7 @@
 			loading="lazy"
 			class="h-full w-full object-cover"
 			onerror={markImageErrored}
+			oncontextmenu={suppressContextMenu}
 		/>
 		<div
 			class="absolute inset-0 bg-overlay opacity-0 transition-opacity duration-150 group-hover:opacity-100"
@@ -49,7 +54,7 @@
 		<button
 			type="button"
 			aria-label="Remove item"
-			class="absolute right-1 top-1 cursor-pointer opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+			class="absolute right-1 top-1 cursor-pointer opacity-0 transition-opacity duration-150 group-hover:opacity-100 pointer-coarse:hidden"
 			onclick={removeSlot}
 		>
 			<Trash2

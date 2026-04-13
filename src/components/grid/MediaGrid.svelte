@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { flip } from "svelte/animate"
+	import { fade } from "svelte/transition"
 	import { dndzone } from "svelte-dnd-action"
 	import type { DndEvent } from "svelte-dnd-action"
 	import { gridStore } from "../../stores/gridStore.svelte"
@@ -7,6 +8,8 @@
 	import type { MediaItem } from "../../stores/grid.type"
 	import EmptySlot from "./EmptySlot.svelte"
 	import FilledSlot from "./FilledSlot.svelte"
+	import TrashZone from "./TrashZone.svelte"
+	import { bigTick, smallTick } from "../../lib/haptics"
 
 	const FLIP_DURATION_MS = 200
 
@@ -19,8 +22,11 @@
 	let filledSlotsToShow = $derived<DndFilledItem[]>(
 		tentativeSlots ?? gridStore.slots,
 	)
+	let isDragging = $derived(tentativeSlots !== null)
 
 	let isMobile = $state(false)
+
+	// track mobile mode
 	$effect(() => {
 		const query = window.matchMedia("(pointer: coarse)")
 		isMobile = query.matches
@@ -33,11 +39,19 @@
 
 	/** implementation for svelte-dnd - called when drag is hovering over slots*/
 	function handleConsider(event: CustomEvent<DndEvent<DndFilledItem>>) {
+		if (tentativeSlots !== null) {
+			smallTick()
+		} else {
+			bigTick()
+		}
 		tentativeSlots = event.detail.items
 	}
 
 	/** called by svelte-dnd when the user lets go of a dragged item */
 	function handleFinalize(event: CustomEvent<DndEvent<DndFilledItem>>) {
+		// If the drop landed in the TrashZone, the item left this zone during
+		// consider — so event.detail.items is already the post-delete list and
+		// loadGrid effectively removes it. Same code path handles reorder.
 		const reordered = event.detail.items.filter(
 			(item) => !item.isDndShadowItem,
 		) as MediaItem[]
@@ -47,6 +61,16 @@
 
 	function isShadowItem(item: DndFilledItem): boolean {
 		return item.isDndShadowItem === true
+	}
+
+	/** tilt the dragged clone; svelte-dnd-action uses transform on the
+	 *  outer wrapper for positioning, so we rotate the inner card instead */
+	function tiltDraggedElement(draggedEl?: HTMLElement) {
+		const card = draggedEl?.firstElementChild
+		if (card instanceof HTMLElement) {
+			card.style.transform = "rotate(4deg)"
+			card.style.transition = "transform 150ms ease-out"
+		}
 	}
 </script>
 
@@ -66,22 +90,20 @@
 			{/each}
 		</div>
 		<div
-			class="pointer-events-none absolute inset-0 grid content-start gap-(--spacing-grid-gap)"
+			class="absolute inset-0 grid content-start gap-(--spacing-grid-gap)"
 			style="grid-template-columns: repeat({GRID_WIDTH}, minmax(0, 1fr))"
 			use:dndzone={{
 				items: filledSlotsToShow,
 				flipDurationMs: FLIP_DURATION_MS,
-				dragDisabled: isMobile,
 				dropTargetStyle: {},
+				delayTouchStart: 150,
+				transformDraggedElement: tiltDraggedElement,
 			}}
 			onconsider={handleConsider}
 			onfinalize={handleFinalize}
 		>
 			{#each filledSlotsToShow as item, index (item.id)}
-				<div
-					class="pointer-events-auto"
-					animate:flip={{ duration: FLIP_DURATION_MS }}
-				>
+				<div animate:flip={{ duration: FLIP_DURATION_MS }}>
 					<FilledSlot
 						{item}
 						{index}
@@ -92,3 +114,11 @@
 		</div>
 	</div>
 </div>
+{#if isMobile && isDragging}
+	<div
+		class="pointer-events-none fixed bottom-6 left-1/2 z-50 -translate-x-1/2"
+		transition:fade={{ duration: 150 }}
+	>
+		<TrashZone />
+	</div>
+{/if}

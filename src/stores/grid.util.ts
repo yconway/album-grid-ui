@@ -1,4 +1,4 @@
-import type { Grid, MediaItem } from "./grid.type"
+import type { DndFilledItem, Grid, MediaItem } from "./grid.type"
 
 const GRID_HEIGHT = 5
 export const GRID_WIDTH = 5
@@ -26,4 +26,9 @@ export function removeItem(grid: Grid, index: number): Grid {
 
 export function isFull(grid: Grid): boolean {
 	return grid.length === GRID_SIZE
+}
+
+/** Returns a new Grid with svelte-dnd-action's shadow placeholder removed. */
+export function stripShadowItems(items: DndFilledItem[]): Grid {
+	return items.filter((item) => item.isDndShadowItem !== true) as Grid
 }

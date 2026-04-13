@@ -12,6 +12,9 @@
 	let { item, index, isShadow = false }: FilledSlotProps = $props()
 
 	let hasImageError = $state(false)
+	let slotBaseClass = $derived(
+		`aspect-square rounded-[--radius-thumb]${isShadow ? " ring-2 ring-accent" : ""}`,
+	)
 
 	function markImageErrored() {
 		hasImageError = true
@@ -27,18 +30,10 @@
 </script>
 
 {#if hasImageError}
-	<div
-		class="aspect-square rounded-[--radius-thumb] bg-surface/60 {isShadow ?
-			'ring-2 ring-accent'
-		:	''}"
-	></div>
+	<div class="{slotBaseClass} bg-surface/60"></div>
 {:else}
 	<div
-		class="group relative aspect-square cursor-grab overflow-hidden rounded-[--radius-thumb] shadow-sm {(
-			isShadow
-		) ?
-			'ring-2 ring-accent'
-		:	''}"
+		class="{slotBaseClass} group relative cursor-grab overflow-hidden shadow-sm"
 	>
 		<img
 			src={item.coverUrl}

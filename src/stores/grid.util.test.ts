@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest"
-import { addItem, isFull, removeItem, GRID_SIZE } from "./grid.util"
-import type { Grid, MediaItem } from "./grid.type"
+import {
+	addItem,
+	isFull,
+	removeItem,
+	stripShadowItems,
+	GRID_SIZE,
+} from "./grid.util"
+import type { DndFilledItem, Grid, MediaItem } from "./grid.type"
 
 function makeItem(id: string): MediaItem {
 	return {
@@ -65,6 +71,52 @@ describe("removeItem", () => {
 
 	it("throws when removing from an empty grid", () => {
 		expect(() => removeItem([], 0)).toThrow(RangeError)
+	})
+})
+
+describe("stripShadowItems", () => {
+	const shadow: DndFilledItem = {
+		...makeItem("shadow"),
+		isDndShadowItem: true,
+	}
+
+	it("returns an empty grid for empty input", () => {
+		expect(stripShadowItems([])).toEqual([])
+	})
+
+	it("returns the same items when no shadow item is present", () => {
+		expect(stripShadowItems([itemA, itemB, itemC])).toEqual([
+			itemA,
+			itemB,
+			itemC,
+		])
+	})
+
+	it("removes a single shadow item, preserving order of real items", () => {
+		expect(stripShadowItems([itemA, shadow, itemB, itemC])).toEqual([
+			itemA,
+			itemB,
+			itemC,
+		])
+	})
+
+	it("handles a shadow item at the start", () => {
+		expect(stripShadowItems([shadow, itemA, itemB])).toEqual([itemA, itemB])
+	})
+
+	it("handles a shadow item in the middle", () => {
+		expect(stripShadowItems([itemA, shadow, itemB])).toEqual([itemA, itemB])
+	})
+
+	it("handles a shadow item at the end", () => {
+		expect(stripShadowItems([itemA, itemB, shadow])).toEqual([itemA, itemB])
+	})
+
+	it("does not mutate the input", () => {
+		const input: DndFilledItem[] = [itemA, shadow, itemB]
+		const snapshot = [...input]
+		stripShadowItems(input)
+		expect(input).toEqual(snapshot)
 	})
 })
 

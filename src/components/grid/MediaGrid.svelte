@@ -4,18 +4,24 @@
 	import { dndzone } from "svelte-dnd-action"
 	import type { DndEvent } from "svelte-dnd-action"
 	import { gridStore } from "../../stores/gridStore.svelte"
-	import { GRID_SIZE, GRID_WIDTH } from "../../stores/grid.util"
-	import type { MediaItem } from "../../stores/grid.type"
+	import {
+		GRID_SIZE,
+		GRID_WIDTH,
+		stripShadowItems,
+	} from "../../stores/grid.util"
+	import type { DndFilledItem } from "../../stores/grid.type"
 	import EmptySlot from "./EmptySlot.svelte"
 	import FilledSlot from "./FilledSlot.svelte"
 	import TrashZone from "./TrashZone.svelte"
 	import { bigTick, smallTick } from "../../lib/haptics"
 
 	const FLIP_DURATION_MS = 200
-
-	// During a drag, svelte-dnd-action injects a shadow placeholder into the
-	// items array. It has the same shape as a real item plus a marker flag.
-	type DndFilledItem = MediaItem & { isDndShadowItem?: boolean }
+	const DRAG_TOUCH_DELAY_MS = 150
+	const DRAG_TILT_DEG = 4
+	const DRAG_TILT_TRANSITION_MS = 150
+	/** Slot edge length at the md breakpoint. The grid's max-width is derived
+	 *  from this so GRID_WIDTH changes stay in sync automatically. */
+	const SLOT_SIZE_MD = "6.9rem"
 
 	/** during drag, this holds the tentative state of filled items including the shadow item */
 	let tentativeSlots = $state<DndFilledItem[] | null>(null)
@@ -51,16 +57,9 @@
 	function handleFinalize(event: CustomEvent<DndEvent<DndFilledItem>>) {
 		// If the drop landed in the TrashZone, the item left this zone during
 		// consider — so event.detail.items is already the post-delete list and
-		// loadGrid effectively removes it. Same code path handles reorder.
-		const reordered = event.detail.items.filter(
-			(item) => !item.isDndShadowItem,
-		) as MediaItem[]
-		gridStore.loadGrid(reordered)
+		// stripShadowItems yields the post-delete grid. Same code path handles reorder.
+		gridStore.loadGrid(stripShadowItems(event.detail.items))
 		tentativeSlots = null
-	}
-
-	function isShadowItem(item: DndFilledItem): boolean {
-		return item.isDndShadowItem === true
 	}
 
 	/** tilt the dragged clone; svelte-dnd-action uses transform on the
@@ -68,14 +67,18 @@
 	function tiltDraggedElement(draggedEl?: HTMLElement) {
 		const card = draggedEl?.firstElementChild
 		if (card instanceof HTMLElement) {
-			card.style.transform = "rotate(4deg)"
-			card.style.transition = "transform 150ms ease-out"
+			card.style.transform = `rotate(${DRAG_TILT_DEG}deg)`
+			card.style.transition = `transform ${DRAG_TILT_TRANSITION_MS}ms ease-out`
 		}
 	}
 </script>
 
-<!-- md:w-150 (37.5rem) is approx. GRID_WIDTH * slot width — keep in sync with grid config -->
-<div class="mx-auto w-full md:w-150">
+<!-- Max grid width on md+ is derived from GRID_WIDTH and the gap token,
+	 so changing either stays in sync without manual retuning. -->
+<div
+	class="mx-auto w-full md:max-w-(--grid-max-width)"
+	style="--grid-max-width: calc({GRID_WIDTH} * {SLOT_SIZE_MD} + ({GRID_WIDTH} - 1) * var(--spacing-grid-gap))"
+>
 	<!-- Two stacked grids: the empty layer defines the 5x5 footprint; the dnd
 		 layer sits on top and only contains filled items, so svelte-dnd-action
 		 never sees empty slots and the filled-prefix invariant is preserved
@@ -96,7 +99,7 @@
 				items: filledSlotsToShow,
 				flipDurationMs: FLIP_DURATION_MS,
 				dropTargetStyle: {},
-				delayTouchStart: 150,
+				delayTouchStart: DRAG_TOUCH_DELAY_MS,
 				transformDraggedElement: tiltDraggedElement,
 			}}
 			onconsider={handleConsider}
@@ -107,7 +110,7 @@
 					<FilledSlot
 						{item}
 						{index}
-						isShadow={isShadowItem(item)}
+						isShadow={item.isDndShadowItem === true}
 					/>
 				</div>
 			{/each}

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import DevToolbar from "../dev/DevToolbar.svelte"
+	import ThemeToggle from "../ui/ThemeToggle.svelte"
 </script>
 
 <header
@@ -8,5 +9,6 @@
 	<span class="text-lg font-bold tracking-tight text-text-primary"
 		>Album Grid</span
 	>
+	<ThemeToggle />
 	<DevToolbar />
 </header>

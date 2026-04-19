@@ -11,8 +11,8 @@ function makePresetItem(index: number): MediaItem {
 }
 
 function buildGrid(filledCount: number): Grid {
-	return Array.from({ length: GRID_SIZE }, (_unusedSlot, slotIndex) =>
-		slotIndex < filledCount ? makePresetItem(slotIndex) : null,
+	return Array.from({ length: filledCount }, (_unusedSlot, slotIndex) =>
+		makePresetItem(slotIndex),
 	)
 }
 

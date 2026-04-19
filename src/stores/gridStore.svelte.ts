@@ -1,16 +1,8 @@
-import {
-	addItem,
-	createEmptyGrid,
-	isFull,
-	reorderSlot,
-	removeItem,
-	swapSlots,
-	vacuumGrid,
-} from "./grid.util"
+import { addItem, isFull, removeItem } from "./grid.util"
 import type { Grid, GridStore, MediaItem } from "./grid.type"
 
 export function createGridStore(): GridStore {
-	let grid = $state<Grid>(createEmptyGrid())
+	let grid = $state<Grid>([])
 	const gridIsFull = $derived(isFull(grid))
 
 	return {
@@ -30,17 +22,8 @@ export function createGridStore(): GridStore {
 			grid = newGrid
 		},
 
-		/** vacuums grid after removing the item. */
 		removeItem(index: number): void {
-			grid = vacuumGrid(removeItem(grid, index))
-		},
-
-		swapSlots(indexA: number, indexB: number): void {
-			grid = swapSlots(grid, indexA, indexB)
-		},
-
-		reorderSlot(fromIndex: number, toIndex: number): void {
-			grid = reorderSlot(grid, fromIndex, toIndex)
+			grid = removeItem(grid, index)
 		},
 	}
 }

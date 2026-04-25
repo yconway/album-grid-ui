@@ -108,3 +108,18 @@ export const gridStore = createGridStore()
 ```
 
 **Type definitions** live in a `.type.ts` file alongside the store (e.g. `grid.type.ts`), per the TypeScript convention. The store file re-exports types as the single public entry point for consumers.
+
+## CI/CD: GitHub Actions
+
+The CI workflow (`.github/workflows/ci.yml`) runs on every push and pull request to `master`. Each check is defined as its own job, which means GitHub Actions runs them in parallel by default — no explicit parallelism config needed.
+
+**Jobs (all run in parallel):**
+
+- `lint` — ESLint (`yarn lint`)
+- `format` — Prettier format check (`yarn format:check`)
+- `svelte-check` — `svelte-check` validation (types, a11y, unused CSS, Svelte-specific warnings)
+- `test` — Vitest test suite (`yarn test`)
+
+**Why split into separate jobs:** parallel execution gives faster feedback, and each job's pass/fail status surfaces individually in the GitHub UI — easier to see _which_ check failed without scrolling through a single combined log. Each job uses the official `actions/setup-node@v4` with built-in yarn caching to keep install times low.
+
+**Deployment:** TODO — not yet configured. A deployment job will be added once deployment tooling and target environment are decided.

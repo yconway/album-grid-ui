@@ -9,6 +9,5 @@ package-lock.json
 
 tmp/*
 tasks/*
-AGENT.md
 documentation/*
 !documentation/FRAMEWORK.md
